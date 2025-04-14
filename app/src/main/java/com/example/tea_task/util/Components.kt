@@ -16,13 +16,13 @@ import androidx.compose.ui.unit.dp
 import com.example.tea_task.R
 
 @Composable
-fun LoadingIndicator(modifier: Modifier) {
+fun LoadingIndicator(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
-            color = Color.Red,
+            color = Color.White,
             strokeWidth = 4.dp
         )
     }

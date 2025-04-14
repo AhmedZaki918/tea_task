@@ -1,5 +1,10 @@
 package com.example.tea_task.presentation.home
 
+import com.example.tea_task.data.model.competition.CompetitionsResponse
+import com.example.tea_task.util.RequestState
+
 data class HomeUiState (
-    val data : String = ""
+    val competitionsData : CompetitionsResponse = CompetitionsResponse(),
+    val competitionsState : RequestState = RequestState.LOADING,
+    val isNetworkError : Boolean = false
 )

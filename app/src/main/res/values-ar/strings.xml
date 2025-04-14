@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TEA_TASK</string>
+    <string name="connection_lost">تعذر الاتصال</string>
+    <string name="ops_something_went_wrong">لقد حدث خطأ</string>
+    <string name="retry">اعد المحاولة</string>
+</resources>

@@ -5,6 +5,6 @@ import com.example.tea_task.util.RequestState
 
 data class HomeUiState (
     val competitionsData : CompetitionsResponse = CompetitionsResponse(),
-    val competitionsState : RequestState = RequestState.LOADING,
+    val competitionsState : RequestState = RequestState.IDLE,
     val isNetworkError : Boolean = false
 )

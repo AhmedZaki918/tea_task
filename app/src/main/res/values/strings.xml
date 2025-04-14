@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">TEA_TASK</string>
+    <string name="app_name" translatable="false">TEA_TASK</string>
+    <string name="connection_lost">Connection lost</string>
+    <string name="ops_something_went_wrong">Ops, something went wrong!</string>
+    <string name="retry">Retry</string>
 </resources>

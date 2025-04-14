@@ -1,9 +1,9 @@
 package com.example.tea_task.presentation.home
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tea_task.data.remote.Resource
 import com.example.tea_task.data.repository.HomeRepo
+import com.example.tea_task.util.BaseViewModel
 import com.example.tea_task.util.RequestState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,10 +16,17 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val repo: HomeRepo
-) : ViewModel() {
+) : BaseViewModel<HomeIntent>() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+
+
+    override fun onIntent(intent: HomeIntent) {
+        if (intent is HomeIntent.RetryApi) {
+            displayCompetitions()
+        }
+    }
 
     init {
         displayCompetitions()
@@ -28,6 +35,7 @@ class HomeViewModel @Inject constructor(
 
     private fun displayCompetitions() {
         viewModelScope.launch {
+            enableLoadingState()
 
             val competitionsResponse = repo.competitions()
             if (competitionsResponse is Resource.Success) {
@@ -46,6 +54,14 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    fun enableLoadingState() {
+        _uiState.update {
+            it.copy(
+                competitionsState = RequestState.LOADING
+            )
         }
     }
 }

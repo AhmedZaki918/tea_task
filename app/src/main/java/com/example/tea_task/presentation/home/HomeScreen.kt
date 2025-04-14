@@ -4,6 +4,8 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -21,9 +23,11 @@ fun HomeScreen(
     val uiState = viewModel.uiState.collectAsState().value
     val context = LocalContext.current
 
+
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Black)) {
+
 
         when (uiState.competitionsState) {
             RequestState.LOADING -> {
@@ -31,10 +35,19 @@ fun HomeScreen(
             }
 
             RequestState.SUCCESS -> {
-                context.toast(
-                    "SUCCESS ${uiState.competitionsData.competitions[0].area.name}",
-                    Toast.LENGTH_LONG
-                )
+
+                LazyColumn(modifier = Modifier.fillMaxSize()
+                    .background(Black)
+                ) {
+                    items (uiState.competitionsData.competitions) { competition ->
+                        ListItemHome(currentItem = competition)
+                    }
+                }
+
+//                context.toast(
+//                    "SUCCESS ${uiState.competitionsData.competitions[0].area.name}",
+//                    Toast.LENGTH_LONG
+//                )
             }
 
             RequestState.ERROR -> {

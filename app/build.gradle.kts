@@ -74,13 +74,12 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     // Coil
-    implementation(libs.coil)
+    implementation(libs.coil.compose)
 
     // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
-
 
     // Navigation
     implementation(libs.androidx.navigation.compose)

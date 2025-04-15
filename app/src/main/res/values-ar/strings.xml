@@ -4,4 +4,5 @@
     <string name="connection_lost">تعذر الاتصال</string>
     <string name="ops_something_went_wrong">لقد حدث خطأ</string>
     <string name="retry">اعد المحاولة</string>
+    <string name="current_season">الموسم الحالى</string>
 </resources>

@@ -7,7 +7,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,6 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tea_task.R
@@ -37,22 +43,31 @@ fun LoadingIndicator(modifier: Modifier = Modifier) {
     }
 }
 
+
 @Composable
 fun BackButton(
     modifier: Modifier,
-    onBackClicked: () -> Unit,
-    isTintEnabled: Boolean = false
+    onBackClicked: () -> Unit
 ) {
-    Image(
-        modifier = modifier
-            .clickable {
-                onBackClicked()
-            },
-        painter = painterResource(R.drawable.baseline_arrow_back),
-        contentDescription = "Back button",
-        colorFilter = if (isTintEnabled) ColorFilter.tint(Color.White) else null
-    )
+    Surface(
+        modifier = Modifier
+            .size(40.dp),
+        shape = CircleShape,
+        color = MaterialTheme.colorScheme.primary,
+        shadowElevation = 4.dp
+    ) {
+        Image(
+            modifier = modifier
+                .clickable {
+                    onBackClicked()
+                },
+            painter = painterResource(R.drawable.baseline_arrow_back),
+            contentDescription = "Back button",
+            colorFilter =  ColorFilter.tint(Color.White)
+        )
+    }
 }
+
 
 @Composable
 fun ErrorUi(
@@ -90,12 +105,16 @@ fun ErrorUi(
 
 @Composable
 fun Title(
+    color: Color = OffWhite.copy(alpha = 0.6f),
+    fontSize : TextUnit = 16.sp,
     modifier: Modifier,
-    description: String
+    description: String,
+    fontFamily : FontFamily? = null
 ) {
     Text(
-        fontSize = 16.sp,
-        color = OffWhite.copy(alpha = 0.6f),
+        fontFamily = fontFamily,
+        fontSize = fontSize,
+        color = color,
         text = description,
         modifier = modifier
     )

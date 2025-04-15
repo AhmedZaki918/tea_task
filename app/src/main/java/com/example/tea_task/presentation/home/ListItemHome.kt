@@ -65,10 +65,11 @@ fun ListItemHome(currentItem: Competition) {
                     .constrainAs(imageEmblem) {
                         top.linkTo(textAreaName.bottom, MEDIUM_MARGIN)
                         start.linkTo(textAreaName.start)
+                        end.linkTo(textAreaName.end)
                     }
-                    .size(60.dp)
+                    .size(70.dp)
                     .padding(bottom = MEDIUM_MARGIN),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Fit
             )
 
 

@@ -9,7 +9,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import com.example.tea_task.presentation.navigation.Screen
 import com.example.tea_task.ui.theme.Black
 import com.example.tea_task.ui.theme.LARGE_MARGIN
 import com.example.tea_task.util.ErrorUi
@@ -18,7 +19,8 @@ import com.example.tea_task.util.RequestState
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel()
+    navController: NavHostController,
+    viewModel: HomeViewModel
 ) {
     val uiState = viewModel.uiState.collectAsState().value
 
@@ -40,7 +42,13 @@ fun HomeScreen(
                         .background(Black)
                 ) {
                     items(uiState.competitionsData.competitions) { competition ->
-                        ListItemHome(currentItem = competition)
+                        ListItemHome(
+                            currentItem = competition,
+                            onItemClicked = { competitionItem ->
+                                viewModel.onIntent(HomeIntent.OnCompetitionClicked(competitionItem))
+                                navController.navigate(Screen.DETAILS_SCREEN.route)
+                            }
+                        )
                     }
                 }
             }

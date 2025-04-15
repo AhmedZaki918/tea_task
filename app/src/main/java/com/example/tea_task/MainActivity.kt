@@ -8,7 +8,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.example.tea_task.presentation.home.HomeScreen
+import com.example.tea_task.presentation.navigation.NavGraph
 import com.example.tea_task.ui.theme.TEA_TASKTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,7 +25,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             TEA_TASKTheme {
-                HomeScreen()
+                val navController = rememberNavController()
+                NavGraph(navController = navController)
             }
         }
     }

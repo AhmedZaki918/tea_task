@@ -4,4 +4,8 @@
     <string name="ops_something_went_wrong">Ops, something went wrong!</string>
     <string name="retry">Retry</string>
     <string name="current_season">Current Season</string>
+    <string name="end_date">End date</string>
+    <string name="start_date">Start date</string>
+    <string name="current_matchday">Current matchday</string>
+    <string name="seasons_left">Seasons left</string>
 </resources>

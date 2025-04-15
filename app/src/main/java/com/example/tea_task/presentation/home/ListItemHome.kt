@@ -1,5 +1,6 @@
 package com.example.tea_task.presentation.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,13 +22,19 @@ import com.example.tea_task.util.SubTitle
 import com.example.tea_task.util.Title
 
 @Composable
-fun ListItemHome(currentItem: Competition) {
+fun ListItemHome(
+    currentItem: Competition,
+    onItemClicked: (Competition) -> Unit
+) {
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(all = SMALL_MARGIN),
+            .padding(all = SMALL_MARGIN)
+            .clickable {
+                onItemClicked.invoke(currentItem)
+            },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = BlackLight)
     ) {

@@ -25,6 +25,11 @@ class HomeViewModel @Inject constructor(
     override fun onIntent(intent: HomeIntent) {
         if (intent is HomeIntent.RetryApi) {
             displayCompetitions()
+        } else if (intent is HomeIntent.OnCompetitionClicked) {
+            // Save a competition when clicked to pass it to details screen via shared view model
+            _uiState.update {
+                it.copy(savedCompetition = intent.competition)
+            }
         }
     }
 

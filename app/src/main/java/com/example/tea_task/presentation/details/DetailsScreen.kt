@@ -1,6 +1,5 @@
 package com.example.tea_task.presentation.details
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,15 +12,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import coil.compose.AsyncImage
 import com.example.tea_task.R
+import com.example.tea_task.data.model.competition.Competition
+import com.example.tea_task.presentation.home.HomeViewModel
 import com.example.tea_task.ui.theme.BIG_MARGIN
 import com.example.tea_task.ui.theme.Black
 import com.example.tea_task.ui.theme.BlackLight
@@ -35,22 +37,24 @@ import com.example.tea_task.ui.theme.White
 import com.example.tea_task.util.SubTitle
 import com.example.tea_task.util.Title
 
-@Preview(showSystemUi = true)
 @Composable
-fun DetailsScreen() {
+fun DetailsScreen(
+    viewModel: HomeViewModel
+) {
+    val competition = viewModel.uiState.collectAsState().value.savedCompetition
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Black)
     ) {
-        DetailsHeader()
-        CurrentSeason()
+        DetailsHeader(competition)
+        CurrentSeason(competition)
     }
 }
 
 @Composable
-fun CurrentSeason() {
+fun CurrentSeason(competition: Competition) {
 
     Title(
         modifier = Modifier.padding(
@@ -88,7 +92,7 @@ fun CurrentSeason() {
                     start.linkTo(parent.start, MEDIUM_MARGIN)
                     top.linkTo(parent.top, MEDIUM_MARGIN)
                 },
-                description = "2025-12-21"
+                description = competition.currentSeason.startDate
             )
 
             // Child start date
@@ -97,7 +101,7 @@ fun CurrentSeason() {
                     start.linkTo(textParentStartDate.start)
                     top.linkTo(textParentStartDate.bottom, SMALL_MARGIN)
                 },
-                description = "Start date"
+                description = stringResource(R.string.start_date)
             )
 
 
@@ -109,7 +113,7 @@ fun CurrentSeason() {
                     start.linkTo(textParentStartDate.end, BIG_MARGIN)
                     top.linkTo(parent.top, MEDIUM_MARGIN)
                 },
-                description = "2026-01-18"
+                description = competition.currentSeason.endDate
             )
 
 
@@ -119,7 +123,7 @@ fun CurrentSeason() {
                     start.linkTo(textParentEndDate.start)
                     top.linkTo(textParentEndDate.bottom, SMALL_MARGIN)
                 },
-                description = "End date"
+                description = stringResource(R.string.end_date)
             )
 
             // Parent current matchday
@@ -130,7 +134,7 @@ fun CurrentSeason() {
                     start.linkTo(textParentStartDate.start)
                     top.linkTo(textChildStartDate.bottom, CUSTOM_MARGIN)
                 },
-                description = "22"
+                description = competition.currentSeason.currentMatchday.toString()
             )
 
             // Child current matchday
@@ -139,7 +143,7 @@ fun CurrentSeason() {
                     start.linkTo(textParentMatchday.start)
                     top.linkTo(textParentMatchday.bottom, SMALL_MARGIN)
                 },
-                description = "Current matchday"
+                description = stringResource(R.string.current_matchday)
             )
 
 
@@ -151,7 +155,7 @@ fun CurrentSeason() {
                     start.linkTo(textParentEndDate.start)
                     top.linkTo(textChildEndDate.bottom, CUSTOM_MARGIN)
                 },
-                description = "3"
+                description = competition.numberOfAvailableSeasons.toString()
             )
 
             // Child seasons left
@@ -160,14 +164,14 @@ fun CurrentSeason() {
                     start.linkTo(textParentSeason.start)
                     top.linkTo(textParentSeason.bottom, SMALL_MARGIN)
                 },
-                description = "Seasons left"
+                description = stringResource(R.string.seasons_left)
             )
         }
     }
 }
 
 @Composable
-fun DetailsHeader() {
+fun DetailsHeader(competition: Competition) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -181,7 +185,7 @@ fun DetailsHeader() {
                 start.linkTo(parent.start, MEDIUM_MARGIN)
                 bottom.linkTo(textChampionshipType.top, VERY_SMALL_MARGIN)
             },
-            description = "AFC Champions League",
+            description = competition.name,
             fontSize = 20.sp,
             color = White,
             fontFamily = FontFamily.Serif
@@ -192,19 +196,22 @@ fun DetailsHeader() {
                 bottom.linkTo(parent.bottom, SMALL_MARGIN)
                 start.linkTo(textChampionship.start)
             },
-            description = "France"
+            description = competition.area.name
         )
 
-        Image(
+
+        AsyncImage(
+            model = competition.emblem,
+            contentDescription = "Team logo",
             modifier = Modifier
                 .constrainAs(imageTeamLogo) {
-                    end.linkTo(parent.end, SMALL_MARGIN)
+                    end.linkTo(parent.end, MEDIUM_MARGIN)
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                 }
-                .size(150.dp),
-            contentDescription = "",
-            painter = painterResource(id = R.drawable.abl)
+                .size(130.dp)
+                .padding(bottom = MEDIUM_MARGIN),
+            contentScale = ContentScale.Fit
         )
     }
 }

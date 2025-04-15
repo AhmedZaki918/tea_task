@@ -5,4 +5,8 @@
     <string name="ops_something_went_wrong">لقد حدث خطأ</string>
     <string name="retry">اعد المحاولة</string>
     <string name="current_season">الموسم الحالى</string>
+    <string name="end_date">تاريخ الانتهاء</string>
+    <string name="start_date">تاريخ البداية</string>
+    <string name="current_matchday">الماتش الحالى</string>
+    <string name="seasons_left">المواسم المتبقية</string>
 </resources>

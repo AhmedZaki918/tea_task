@@ -39,7 +39,7 @@ fun HomeScreen(
 
             RequestState.SUCCESS -> {
                 val competitions =
-                    if (cachedData.isNotEmpty()) cachedData
+                    if (uiState.isCachedDataExist) cachedData
                     else uiState.competitionsData.competitions
 
                 LazyColumn(
@@ -62,7 +62,7 @@ fun HomeScreen(
 
             RequestState.ERROR -> {
                 // No internet connection and cached data are available
-                if (uiState.isNetworkError && cachedData.isNotEmpty()) {
+                if (uiState.isCachedDataExist) {
                     viewModel.onIntent(HomeIntent.LoadOfflineContent)
                 } else {
                     // No internet connection and cached data are not available

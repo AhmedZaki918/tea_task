@@ -58,10 +58,12 @@ class HomeViewModel @Inject constructor(
                 cacheData(competitionsResponse.data.competitions)
 
             } else if (competitionsResponse is Resource.Failure) {
+                val cachedData = repo.getCompetitions().stateIn(viewModelScope).value
                 _uiState.update {
                     it.copy(
-                        isNetworkError = competitionsResponse.isNetworkError,
-                        competitionsState = RequestState.ERROR
+                        isCachedDataExist = competitionsResponse.isNetworkError && cachedData.isNotEmpty(),
+                        competitionsState = RequestState.ERROR,
+                        isNetworkError = competitionsResponse.isNetworkError
                     )
                 }
             }

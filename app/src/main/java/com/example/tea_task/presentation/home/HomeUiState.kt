@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 data class HomeUiState(
     val competitionsData: CompetitionsResponse = CompetitionsResponse(),
     val competitionsState: RequestState = RequestState.IDLE,
+    val isCachedDataExist: Boolean = false,
     val isNetworkError: Boolean = false,
     val competitionDetails: Competition = Competition(),
     val cachedCompetitions: StateFlow<List<Competition>> = MutableStateFlow(emptyList())

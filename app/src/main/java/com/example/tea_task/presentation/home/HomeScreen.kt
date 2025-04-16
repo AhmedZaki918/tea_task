@@ -2,6 +2,7 @@ package com.example.tea_task.presentation.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,6 +24,7 @@ fun HomeScreen(
     viewModel: HomeViewModel
 ) {
     val uiState = viewModel.uiState.collectAsState().value
+    val cachedData = uiState.cachedCompetitions.collectAsState().value
 
     Column(
         modifier = Modifier
@@ -36,12 +38,17 @@ fun HomeScreen(
             }
 
             RequestState.SUCCESS -> {
+                val competitions =
+                    if (cachedData.isNotEmpty()) cachedData
+                    else uiState.competitionsData.competitions
+
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Black)
+                        .background(Black),
+                    contentPadding = PaddingValues(bottom = LARGE_MARGIN)
                 ) {
-                    items(uiState.competitionsData.competitions) { competition ->
+                    items(competitions) { competition ->
                         ListItemHome(
                             currentItem = competition,
                             onItemClicked = { competitionItem ->
@@ -54,13 +61,19 @@ fun HomeScreen(
             }
 
             RequestState.ERROR -> {
-                ErrorUi(
-                    onRetryClicked = {
-                        viewModel.onIntent(HomeIntent.RetryApi)
-                    },
-                    isNetworkError = uiState.isNetworkError,
-                    modifier = Modifier
-                )
+                // No internet connection and cached data are available
+                if (uiState.isNetworkError && cachedData.isNotEmpty()) {
+                    viewModel.onIntent(HomeIntent.LoadOfflineContent)
+                } else {
+                    // No internet connection and cached data are not available
+                    ErrorUi(
+                        onRetryClicked = {
+                            viewModel.onIntent(HomeIntent.RetryApi)
+                        },
+                        isNetworkError = uiState.isNetworkError,
+                        modifier = Modifier
+                    )
+                }
             }
 
             else -> Unit

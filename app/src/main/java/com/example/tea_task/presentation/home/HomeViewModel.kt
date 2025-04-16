@@ -1,6 +1,7 @@
 package com.example.tea_task.presentation.home
 
 import androidx.lifecycle.viewModelScope
+import com.example.tea_task.data.model.competition.Competition
 import com.example.tea_task.data.remote.Resource
 import com.example.tea_task.data.repository.HomeRepo
 import com.example.tea_task.util.BaseViewModel
@@ -9,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,8 +30,10 @@ class HomeViewModel @Inject constructor(
         } else if (intent is HomeIntent.OnCompetitionClicked) {
             // Save a competition when clicked to pass it to details screen via shared view model
             _uiState.update {
-                it.copy(savedCompetition = intent.competition)
+                it.copy(competitionDetails = intent.competition)
             }
+        } else if (intent is HomeIntent.LoadOfflineContent) {
+            displayCachedCompetitions()
         }
     }
 
@@ -50,6 +54,8 @@ class HomeViewModel @Inject constructor(
                         competitionsState = RequestState.SUCCESS
                     )
                 }
+                // Cache the data to display it if there's no internet connection.
+                cacheData(competitionsResponse.data.competitions)
 
             } else if (competitionsResponse is Resource.Failure) {
                 _uiState.update {
@@ -59,6 +65,32 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    fun cacheData(competitions: List<Competition>) {
+        viewModelScope.launch {
+            if (competitions.isNotEmpty()) {
+                repo.saveCompetitions(competitions)
+            }
+        }
+    }
+
+
+    fun displayCachedCompetitions() {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    cachedCompetitions = repo.getCompetitions().stateIn(
+                        viewModelScope
+                    ),
+                    competitionsState = RequestState.SUCCESS
+                )
+            }
+
+//            // Test cached data are exist or not
+//            val data = uiState.value.cachedCompetitions?.value?.size
+//            Log.d(TAG, "displayCachedCompetitions: $data")
         }
     }
 

@@ -41,7 +41,7 @@ import com.example.tea_task.util.Title
 fun DetailsScreen(
     viewModel: HomeViewModel
 ) {
-    val competition = viewModel.uiState.collectAsState().value.savedCompetition
+    val competition = viewModel.uiState.collectAsState().value.competitionDetails
 
     Column(
         modifier = Modifier
